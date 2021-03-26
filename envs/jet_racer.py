@@ -1,13 +1,15 @@
 # Created by Sheelabhadra Dey
 import cv2
-from jetracer.nvidia_racecar import NvidiaRacecar
-from jetcam.csi_camera import CSICamera
 
 from config import CAMERA_HEIGHT, CAMERA_WIDTH, MAX_THROTTLE, MIN_THROTTLE
 from config import STEERING_GAIN, STEERING_BIAS
 
 class JetRacer(object):
     def __init__(self, camera_width=112, camera_height=112, fps=30):
+        # import these in here so that this file can be imported without crashing on non-jetson systems
+        from jetracer.nvidia_racecar import NvidiaRacecar
+        from jetcam.csi_camera import CSICamera
+
         self.car = NvidiaRacecar()
         print("====== LOADING CAMERA ======")
         self.camera = CSICamera(width=camera_width, height=camera_height, capture_fps=fps)

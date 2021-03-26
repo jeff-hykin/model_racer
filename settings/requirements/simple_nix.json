@@ -17,6 +17,10 @@
                 "from": "a332da8588aeea4feb9359d23f58d95520899e3c"
             },
             {
+                "load": "mpich",
+                "from": "a332da8588aeea4feb9359d23f58d95520899e3c"
+            },
+            {
                 "load": "oh-my-zsh",
                 "from": "a332da8588aeea4feb9359d23f58d95520899e3c"
             },
