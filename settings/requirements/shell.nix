@@ -82,9 +82,16 @@ let
     ];
     
     majorCustomDependencies = rec {
+        python = [
+            definitions.mainPackages.python37
+            definitions.mainPackages.python37Packages.setuptools
+            definitions.mainPackages.python37Packages.pip
+            definitions.mainPackages.python37Packages.virtualenv
+            definitions.mainPackages.python37Packages.wheel
+        ];
     };
     
-    subDepedencies = [];
+    subDepedencies = [] ++ majorCustomDependencies.python;
     
     # TODO: add support for the simple_nix.json to have OS-specific packages (if statement inside package inclusion)
     packagesForMacOnly = [] ++ definitions.mainPackages.lib.optionals (definitions.mainPackages.stdenv.isDarwin) [
