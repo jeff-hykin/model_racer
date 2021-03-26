@@ -61,7 +61,6 @@ class SACWithVAE(SAC):
 
         return policy_loss, qf1_loss, qf2_loss, value_loss, entropy
 
-
     def optimize(self, step, writer, current_lr):
         """
         Do several optimization steps to update the different networks.
@@ -98,7 +97,6 @@ class SACWithVAE(SAC):
         else:
             ratio = proba_target_policy/proba_behavior_policy
         return ratio
-
 
     def learn_jirl(self, total_timesteps, joystick=None, callback=None, 
               seed=None, log_interval=1, tb_log_name="SAC", 
@@ -177,7 +175,7 @@ class SACWithVAE(SAC):
 
                     # Get prediction from base policy
                     steerCmd = float(base_policy.predict(obs)[0][0])
-    #                 print("Steering from IL: ", steerCmd)
+                    # print("Steering from IL: ", steerCmd)
                     throttleCmd = - 1
                     action_expert = [steerCmd, throttleCmd]
                     # mean_exp, std_exp = il_model.get_proba_actions(state)
@@ -274,7 +272,6 @@ class SACWithVAE(SAC):
                          rew_per_step_rl.append(0.0)
                          rl_control.append(0)
 
-    #                 else:
                     elif is_action_actor:
                         ## =====================================
                         ## RL CONTROL
@@ -357,7 +354,7 @@ class SACWithVAE(SAC):
                         # if ep_len > 700:
                         #     print("Expert: ", np.prod(is_ratios_target_actor))
 
-#                         if (len(is_ratios_target_actor) == MAX_LEN) and (np.prod(is_ratios_target_actor) > THRESH):
+                        # if (len(is_ratios_target_actor) == MAX_LEN) and (np.prod(is_ratios_target_actor) > THRESH):
                         if (len(is_ratios_target_actor) == MAX_LEN) and np.all([(p > _THRESH) for p in is_ratios_target_actor]):
                             # Switch control to actor in the next step
                             is_action_actor = True
@@ -388,8 +385,8 @@ class SACWithVAE(SAC):
                         self.env.jet.apply_throttle(0)
                         mb_infos_vals = self.optimize(step, writer, current_lr)
 
-    #                 if print_freq > 0 and ep_len % print_freq == 0 and ep_len > 0:
-    #                     print("{} steps".format(ep_len))
+                    # if print_freq > 0 and ep_len % print_freq == 0 and ep_len > 0:
+                    #     print("{} steps".format(ep_len))
 
                     # Retrieve reward and episode length if using Monitor wrapper
                     maybe_ep_info = info.get('episode')
@@ -457,7 +454,6 @@ class SACWithVAE(SAC):
             np.save(save_path + '/stepwise_reward_rl', rew_per_step_rl)
             print("Saving complete. Give a keyboard interrupt to end")
         return self
-
 
     def learn(self, total_timesteps, callback=None, seed=None,
               log_interval=10, tb_log_name="SAC", reset_num_timesteps=True,
