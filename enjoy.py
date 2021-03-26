@@ -35,7 +35,7 @@ if True:
     args = parser.parse_args()
 
     # create full name local variables of args
-    main_algorithm_name, main_log_folder, reward_log_folder, experiment_number, reward_should_be_normalized, verbose, random_generator_seed, vae_path, number_of_timesteps, should_render = (args.algo, args.folder, args.reward_log, args.exp_id, args.norm_reward, args.verbose, args.seed, args.vae_path, args.n_timesteps, not args.no_render, )
+    main_algorithm_name, main_log_folder, reward_log_folder, experiment_number, reward_should_be_normalized, logging_detail, random_generator_seed, vae_path, number_of_timesteps, should_render = (args.algo, args.folder, args.reward_log, args.exp_id, args.norm_reward, args.verbose, args.seed, args.vae_path, args.n_timesteps, not args.no_render, )
 
     # 
     # defaults
@@ -59,7 +59,7 @@ if True:
     # 
     # logging
     # 
-    if args.verbose >= 1: print(f"Deterministic actions: {deterministic}")
+    if logging_detail >= 1: print(f"Deterministic actions: {deterministic}")
 
 
 
@@ -104,12 +104,13 @@ if True:
         if should_render: env.render('human')
         running_reward += reward[0]
         episode_length += 1
-
-        if done and args.verbose >= 1:
+        
+        # exit condition
+        if done and logging_detail >= 1:
             # NOTE: for env using VecNormalize, the mean reward
             # is a normalized reward when `--norm_reward` flag is passed
             print("Episode Reward: {:.2f}".format(running_reward))
-            print("Episode Length", episode_length)
+            print("Episode Length:", episode_length)
             running_reward = 0.0
             episode_length = 0
     
