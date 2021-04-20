@@ -1,6 +1,6 @@
 import include
 import gym
-UnityToGymWrapper = include.file("/Users/jeffhykin/repos/ml-agents/gym-unity/gym_unity/envs/__init__.py", { "__file__": __file__ }).UnityToGymWrapper
+UnityToGymWrapper = include.file("../gym-unity/gym_unity/envs/__init__.py", { "__file__": __file__ }).UnityToGymWrapper
 from mlagents_envs.environment import UnityEnvironment
 
 parameters = {
