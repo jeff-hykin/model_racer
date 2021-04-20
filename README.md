@@ -13,3 +13,4 @@
 6. Inside the shell (from the setup) run `run main`
 7. Now click the green arrow inside Unity
 <img src="/documentation/images/basic_run.png" alt="where-to-clock">
+8. (you should see output inside the shell now!)
