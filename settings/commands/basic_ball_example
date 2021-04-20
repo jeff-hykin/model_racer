@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+mlagents-learn config/ppo/3DBall.yaml --run-id=first3DBallRun --force
