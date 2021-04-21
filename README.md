@@ -13,9 +13,11 @@
 3. Opening up the scene
     - You probably won't see the blue guy yet, but the menus should look something like
     <img src="/documentation/images/basic_run.png" alt="where-to-clock">
-    - Then (red arrow) open the "Assets/ML-Agents/Examples/3DBall/Scenes" folder
-    - Then (blue arrow) open the "3DBall" Scene
-    - (don't do the green arrow yet)
+
+   - To see the blue guy
+     - open the "Assets/ML-Agents/Examples/3DBall/Scenes" folder (red arrow)
+     - Then open the "3DBall" Scene (blue arrow)
+     - (don't do the green arrow yet)
 4. With your favorite text editor open the `OpenMeInTextEditor/main.py` file (this should look familiar as a stanard python RL setup)
 5. Follow the setup instructions in `./documentation/SETUP.md`
 6. Inside the shell (from the setup.md) run `run main`
