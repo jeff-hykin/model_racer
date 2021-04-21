@@ -25,7 +25,7 @@
       - (blue arrow) Then open the "3DBall" Scene 
       - (don't do the green arrow yet)
 4. With your favorite text editor open the `OpenMeInTextEditor/main.py` file (this should look familiar as a stanard python RL setup)
-5. Follow the setup instructions in [documentation/SETUP.md](https://github.com/jeff-hykin/model_racer)
+5. Follow the generic setup instructions in [documentation/SETUP.md](https://github.com/jeff-hykin/model_racer)
 6. Inside the shell (from the setup.md) run `run main`
 7. Now click the green arrow inside Unity
 <img src="/documentation/images/basic_run.png" alt="where-to-click">
