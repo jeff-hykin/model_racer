@@ -2,9 +2,7 @@
 
 <br>
 
-**NOTE** : You can also use the manual setup listed at the bottom. <br>
-The managed environment is a very reliable way to setup.<br>
-(and if you already have nix, it's pretty much 100% automated)
+**NOTE** : This looks big, but really its just installing one tool that automates installation of everything else
 
 ### For Windows
 
