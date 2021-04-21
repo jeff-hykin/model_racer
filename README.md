@@ -8,7 +8,7 @@
     <img src="/documentation/images/unity_hub.png" alt="where-to-clock">
 
     - click the "Add" then open the `OpenMeWithUnity` folder from this repository (e.g. `model_racer/OpenMeWithUnity`)
-    - Then click the name of the project, and there should be a pop-up like this
+    - Then click the name of the project, and there should be a pop-up (at the bottom) like this
     <img src="/documentation/images/install_prompt.png" alt="where-to-clock">
     
     - Click install, then try opening the project again
