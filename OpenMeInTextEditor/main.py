@@ -4,6 +4,7 @@ UnityToGymWrapper = include.file("../gym-unity/gym_unity/envs/__init__.py", { "_
 from mlagents_envs.environment import UnityEnvironment
 import time
 import numpy as np
+from modules.input_preprocessing_utils import *
 parameters = {
     "number_of_episodes": 10,
 }
@@ -14,10 +15,13 @@ env = UnityToGymWrapper(
 )
 
 try:
+    """
+    Observation: [Camera Input (20, 20, 1), (angle_difference, LidarRay FrontRight, LidarRay FrontMiddle, LidarRay FrontLeft, LidarRayBackMiddle)
+    Action Space: [angularSpeed? -1(left):1(right), speed? -1(back):1(forward)]
+    """
     # Reset the environment
     initial_observations = env.reset()
     print('initial_observations is:')
-    print(initial_observations)
     print('action space range:')
     print('High: ',env.action_space.high)
     print('Low: ',env.action_space.low)
@@ -31,10 +35,6 @@ try:
             actions = env.action_space.sample()  # rotation, acceleration
             actions=np.array([0,1])
             obs, reward, done, _ = env.step(actions)
-            # print('Action:',actions)
-            # print('Obs:',obs)
-            # print('reward:',reward)
-            # time.sleep(1)
             episode_rewards += reward
         print(f"Total reward this episode: {episode_rewards}")
 finally:
