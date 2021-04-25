@@ -2,7 +2,8 @@ import include
 import gym
 UnityToGymWrapper = include.file("../gym-unity/gym_unity/envs/__init__.py", { "__file__": __file__ }).UnityToGymWrapper
 from mlagents_envs.environment import UnityEnvironment
-
+import time
+import numpy as np
 parameters = {
     "number_of_episodes": 10,
 }
@@ -17,6 +18,9 @@ try:
     initial_observations = env.reset()
     print('initial_observations is:')
     print(initial_observations)
+    print('action space range:')
+    print('High: ',env.action_space.high)
+    print('Low: ',env.action_space.low)
 
     for episode_index in range(parameters["number_of_episodes"]):
         env.reset()
@@ -24,8 +28,13 @@ try:
         episode_rewards = 0
         while not done:
             # take a random action
-            actions = env.action_space.sample()
+            actions = env.action_space.sample()  # rotation, acceleration
+            actions=np.array([0,1])
             obs, reward, done, _ = env.step(actions)
+            # print('Action:',actions)
+            # print('Obs:',obs)
+            # print('reward:',reward)
+            # time.sleep(1)
             episode_rewards += reward
         print(f"Total reward this episode: {episode_rewards}")
 finally:
