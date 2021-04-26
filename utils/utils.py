@@ -13,8 +13,7 @@ from stable_baselines.bench import Monitor
 from stable_baselines.common import set_global_seeds
 from stable_baselines.common.policies import FeedForwardPolicy as BasePolicy
 from stable_baselines.common.policies import register_policy
-from stable_baselines.common.vec_env import DummyVecEnv, VecNormalize, \
-    VecFrameStack
+from stable_baselines.common.vec_env import DummyVecEnv, VecNormalize, VecFrameStack
 from stable_baselines.sac.policies import FeedForwardPolicy as SACPolicy
 from stable_baselines.ddpg.policies import FeedForwardPolicy as DDPGPolicy
 
@@ -22,8 +21,7 @@ from algos import DDPG, SAC, PPO2
 from envs.vae_env import JetVAEEnv
 from envs.jet_racer import JetRacer
 from vae.controller import VAEController
-from config import MIN_THROTTLE, MAX_THROTTLE, MAX_CTE_ERROR, FRAME_SKIP, \
-    N_COMMAND_HISTORY
+from config import MIN_THROTTLE, MAX_THROTTLE, MAX_CTE_ERROR, FRAME_SKIP, N_COMMAND_HISTORY, TEST_FRAME_SKIP
 
 ALGOS = {
     # 'a2c': A2C,
@@ -148,7 +146,8 @@ def create_test_env(stats_path=None, seed=0,
 
     vae_path = hyperparams['vae_path']
     if vae_path == '':
-        vae_path = os.path.join(stats_path, 'vae.pkl')
+        vae_path = os.path.join("vae", 'vae.pkl')
+        os.makedirs(os.path.dirname(vae_path), exist_ok=True)
     vae = None
     if stats_path is not None and os.path.isfile(vae_path):
         vae = load_vae(vae_path)

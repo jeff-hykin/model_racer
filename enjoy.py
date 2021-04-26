@@ -21,17 +21,17 @@ from utils import utils
 if True:
     parser = argparse.ArgumentParser()
     parser.add_argument(    '-f',        '--folder' , type=str            , default='logs' , required=False , choices=list(utils.ALGOS.keys()) , help='Log folder'                                                , )
-    parser.add_argument(                   '--algo' , type=str            , default='sac'  ,                ,                                  , help='RL Algorithm'                                              , )
-    parser.add_argument(    '-n',   '--n-timesteps' , type=int            , default=1000   ,                ,                                  , help='number of timesteps'                                       , )
-    parser.add_argument(                 '--exp-id' , type=int            , default=0      ,                ,                                  , help='Experiment ID (-1: no exp folder, 0: latest)'              , )
-    parser.add_argument(                '--verbose' , type=int            , default=1      ,                ,                                  , help='Verbose mode (0: no output, 1: INFO)'                      , )
-    parser.add_argument(              '--no-render' , action='store_true' , default=False  ,                ,                                  , help='Do not render the environment (useful for tests)'          , )
-    parser.add_argument(          '--deterministic' , action='store_true' , default=False  ,                ,                                  , help='Use deterministic actions'                                 , )
-    parser.add_argument(            '--norm-reward' , action='store_true' , default=False  ,                ,                                  , help='Normalize reward if applicable (trained with VecNormalize)', )
-    parser.add_argument(                   '--seed' , type=int            , default=0      ,                ,                                  , help='Random generator seed'                                     , )
-    parser.add_argument(             '--reward-log' , type=str            , default=''     ,                ,                                  , help='Where to log reward'                                       , )
-    parser.add_argument(  '-vae',      '--vae-path' , type=str            , default=''     ,                ,                                  , help='Path to saved VAE'                                         , )
-    parser.add_argument( '-best',    '--best-model' , action='store_true' , default=False  ,                ,                                  , help='Use best saved model of that experiment (if it exists)'    , )
+    parser.add_argument(                   '--algo' , type=str            , default='sac'                                                      , help='RL Algorithm'                                              , )
+    parser.add_argument(    '-n',   '--n-timesteps' , type=int            , default=1000                                                       , help='number of timesteps'                                       , )
+    parser.add_argument(                 '--exp-id' , type=int            , default=0                                                          , help='Experiment ID (-1: no exp folder, 0: latest)'              , )
+    parser.add_argument(                '--verbose' , type=int            , default=1                                                          , help='Verbose mode (0: no output, 1: INFO)'                      , )
+    parser.add_argument(              '--no-render' , action='store_true' , default=False                                                      , help='Do not render the environment (useful for tests)'          , )
+    parser.add_argument(          '--deterministic' , action='store_true' , default=False                                                      , help='Use deterministic actions'                                 , )
+    parser.add_argument(            '--norm-reward' , action='store_true' , default=False                                                      , help='Normalize reward if applicable (trained with VecNormalize)', )
+    parser.add_argument(                   '--seed' , type=int            , default=0                                                          , help='Random generator seed'                                     , )
+    parser.add_argument(             '--reward-log' , type=str            , default=''                                                         , help='Where to log reward'                                       , )
+    parser.add_argument(  '-vae',      '--vae-path' , type=str            , default=''                                                         , help='Path to saved VAE'                                         , )
+    parser.add_argument( '-best',    '--best-model' , action='store_true' , default=False                                                      , help='Use best saved model of that experiment (if it exists)'    , )
     args = parser.parse_args()
 
     # create full name local variables of args
@@ -76,7 +76,7 @@ if True:
     set_global_seeds(random_generator_seed)
     hyperparams, stats_path = utils.get_saved_hyperparams(stats_path, norm_reward=reward_should_be_normalized)
     hyperparams['vae_path'] = vae_path
-    env = utils.create_test_env(stats_path=stats_path, seed=args.seed, log_dir=reward_log_path, hyperparams=hyperparams)
+    env = utils.create_test_env(stats_path=stats_path, seed=random_generator_seed, log_dir=reward_log_path, hyperparams=hyperparams)
     model = utils.ALGOS[main_algorithm_name].load(model_path)
 
     # 
@@ -90,7 +90,7 @@ if True:
         # 
         # ask the model what it is going to do
         # 
-        action, _ = model.predict(observation, deterministic=deterministic)
+        action, _ = model.predict(observation, deterministic=is_deterministic)
         
         # clip the action to avoid out of bound errors
         if isinstance(env.action_space, gym.spaces.Box): action = np.clip(action, env.action_space.low, env.action_space.high)
