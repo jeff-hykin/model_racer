@@ -1,0 +1,4 @@
+[submodule "jirl"]
+	path = source/jirl
+	url = https://github.com/jeff-hykin/model_racer.git
+	branch = jirl
