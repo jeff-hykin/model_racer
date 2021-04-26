@@ -127,6 +127,7 @@ def parse_arguments():
 # 
 def run_agent(arguments: Arguments, env):
     # get the agent
+    if arguments.logging_detail >= 1: print(f'Loading model: {arguments.model_path}')
     model = utils.ALGOS[arguments.main_algorithm_name].load(arguments.model_path)
     
     observation = env.reset()
