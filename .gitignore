@@ -3,6 +3,10 @@
 /summaries
 # Output Artifacts
 /results
+Library/Artifacts/*
+Library/ShaderCache/*
+Library/shadercompiler-*
+Temp/*
 # Output Builds
 /Builds
 

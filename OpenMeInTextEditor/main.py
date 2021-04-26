@@ -5,6 +5,7 @@ from mlagents_envs.environment import UnityEnvironment
 import time
 import numpy as np
 from modules.input_preprocessing_utils import *
+from modules.generic_python_tools import *
 parameters = {
     "number_of_episodes": 10,
 }
@@ -33,8 +34,9 @@ try:
         while not done:
             # take a random action
             actions = env.action_space.sample()  # rotation, acceleration
-            actions=np.array([0,1])
+            actions = np.array([0,1])
             obs, reward, done, _ = env.step(actions)
+            # note: returns a generator, not a list
             episode_rewards += reward
         print(f"Total reward this episode: {episode_rewards}")
 finally:
