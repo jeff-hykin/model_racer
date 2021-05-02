@@ -1,17 +1,19 @@
 ﻿using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class CarAgent : Agent
 {
     public float speed = 10f;
     public float torque = 10f;
-
     public int score = 0;
     public bool resetOnCollision = true;
-
+    public GameObject environmentObject;
     private Transform _track;
-
+    private int actionCount = 0;
+    private int maxActionCountPerEpisode = 10000;
     public override void Initialize()
     {
         GetTrackIncrement();
@@ -38,10 +40,25 @@ public class CarAgent : Agent
         
         var moveVec = transform.position - lastPos;
         float angle = Vector3.Angle(moveVec, _track.forward);
-        float bonus = (1f - angle / 90f) * Mathf.Clamp01(vertical) * Time.fixedDeltaTime;
+        //float bonus = (1f - angle / 90f) * Mathf.Clamp01(vertical) * Time.fixedDeltaTime;
+        float bonus = 0;
+        if (vertical < 0)
+        {
+            bonus = -1.2f* ((1f - angle / 90f) * Mathf.Clamp01(vertical)) * Time.fixedDeltaTime;  // slightly discorage moving backwards
+        }
+        else
+        {
+            bonus = ((1f - angle / 90f) * Mathf.Clamp01(vertical)) * Time.fixedDeltaTime;
+        }
         AddReward(bonus);
 
         score += reward;
+        actionCount++;
+        if (actionCount >= maxActionCountPerEpisode)
+        {
+            actionCount = 0;
+            EndEpisode();
+        }
     }
 
     public override void Heuristic(float[] action)
@@ -50,16 +67,22 @@ public class CarAgent : Agent
         action[1] = Input.GetAxis("Vertical");
     }
 
-    public override void CollectObservations(VectorSensor vectorSensor)
-    {
-        float angle = Vector3.SignedAngle(_track.forward, transform.forward, Vector3.up);
+    //public override void CollectObservations(VectorSensor vectorSensor)
+    //{
+    //    float angle = Vector3.SignedAngle(_track.forward, transform.forward, Vector3.up);
 
-        vectorSensor.AddObservation(angle / 180f);
-        vectorSensor.AddObservation(ObserveRay(1.5f, .5f, 25f));
-        vectorSensor.AddObservation(ObserveRay(1.5f, 0f, 0f));
-        vectorSensor.AddObservation(ObserveRay(1.5f, -.5f, -25f));
-        vectorSensor.AddObservation(ObserveRay(-1.5f, 0, 180f));
-    }
+    //    vectorSensor.AddObservation(angle / 180f);
+    //    vectorSensor.AddObservation(ObserveRay(1.5f, .5f, 25f));
+    //    vectorSensor.AddObservation(ObserveRay(1.5f, .375f, 20f));
+    //    vectorSensor.AddObservation(ObserveRay(1.5f, .25f, 15f));
+    //    vectorSensor.AddObservation(ObserveRay(1.5f, .125f, 10f));
+    //    vectorSensor.AddObservation(ObserveRay(1.5f, 0f, 0f));
+    //    vectorSensor.AddObservation(ObserveRay(1.5f, -.125f, -10f));
+    //    vectorSensor.AddObservation(ObserveRay(1.5f, -.25f, -15f));
+    //    vectorSensor.AddObservation(ObserveRay(1.5f, -.375f, -20f));
+    //    vectorSensor.AddObservation(ObserveRay(1.5f, -.5f, -25f));
+    //    vectorSensor.AddObservation(ObserveRay(-1.5f, 0, 180f));
+    //}
 
     private float ObserveRay(float z, float x, float angle)
     {
@@ -78,6 +101,7 @@ public class CarAgent : Agent
         Physics.Raycast(position, dir, out var hit, RAY_DIST);
         return hit.distance >= 0 ? hit.distance / RAY_DIST : -1f;
     }
+
 
     private int GetTrackIncrement()
     {
@@ -108,11 +132,12 @@ public class CarAgent : Agent
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
         }
+        environmentObject.GetComponent<RoadEnvironmentController>().ResetArea();
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("wall"))
+        if (other.gameObject.CompareTag("wall")|| other.gameObject.CompareTag("obstaclex")|| other.gameObject.CompareTag("obstacley"))
         {
             SetReward(-1f);
             EndEpisode();

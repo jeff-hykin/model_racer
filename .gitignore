@@ -1,6 +1,6 @@
 # Unity
-Library/*
-Temp/*
+/unity/car-track-environment/Library/Artifacts/**/*
+/unity/car-track-environment/Temp/*
 # Output Artifacts (Legacy)
 /models
 /summaries

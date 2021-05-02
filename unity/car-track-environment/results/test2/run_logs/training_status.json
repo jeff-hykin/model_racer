@@ -1,0 +1,59 @@
+{
+    "block_offset": {
+        "lesson_num": 3
+    },
+    "CarDrive": {
+        "checkpoints": [
+            {
+                "steps": 499978,
+                "file_path": "results\\test2\\CarDrive\\CarDrive-499978.onnx",
+                "reward": 14.582875112692514,
+                "creation_time": 1619801908.6954377,
+                "auxillary_file_paths": [
+                    "results\\test2\\CarDrive\\CarDrive-499978.pt"
+                ]
+            },
+            {
+                "steps": 999984,
+                "file_path": "results\\test2\\CarDrive\\CarDrive-999984.onnx",
+                "reward": null,
+                "creation_time": 1619804551.016011,
+                "auxillary_file_paths": [
+                    "results\\test2\\CarDrive\\CarDrive-999984.pt"
+                ]
+            },
+            {
+                "steps": 1499986,
+                "file_path": "results\\test2\\CarDrive\\CarDrive-1499986.onnx",
+                "reward": null,
+                "creation_time": 1619807877.9285305,
+                "auxillary_file_paths": [
+                    "results\\test2\\CarDrive\\CarDrive-1499986.pt"
+                ]
+            },
+            {
+                "steps": 1745056,
+                "file_path": "results\\test2\\CarDrive\\CarDrive-1745056.onnx",
+                "reward": 111.51475688815117,
+                "creation_time": 1619809212.0352304,
+                "auxillary_file_paths": [
+                    "results\\test2\\CarDrive\\CarDrive-1745056.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1745056,
+            "file_path": "results\\test2\\CarDrive.onnx",
+            "reward": 111.51475688815117,
+            "creation_time": 1619809212.0352304,
+            "auxillary_file_paths": [
+                "results\\test2\\CarDrive\\CarDrive-1745056.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.26.0",
+        "torch_version": "1.7.1"
+    }
+}

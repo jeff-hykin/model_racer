@@ -1,0 +1,68 @@
+{
+    "block_offset": {
+        "lesson_num": 1
+    },
+    "CarDrive": {
+        "checkpoints": [
+            {
+                "steps": 5499947,
+                "file_path": "results\\test\\CarDrive\\CarDrive-5499947.onnx",
+                "reward": null,
+                "creation_time": 1619791444.1234052,
+                "auxillary_file_paths": [
+                    "results\\test\\CarDrive\\CarDrive-5499947.pt"
+                ]
+            },
+            {
+                "steps": 5999979,
+                "file_path": "results\\test\\CarDrive\\CarDrive-5999979.onnx",
+                "reward": null,
+                "creation_time": 1619794013.1200907,
+                "auxillary_file_paths": [
+                    "results\\test\\CarDrive\\CarDrive-5999979.pt"
+                ]
+            },
+            {
+                "steps": 6499947,
+                "file_path": "results\\test\\CarDrive\\CarDrive-6499947.onnx",
+                "reward": null,
+                "creation_time": 1619796586.155804,
+                "auxillary_file_paths": [
+                    "results\\test\\CarDrive\\CarDrive-6499947.pt"
+                ]
+            },
+            {
+                "steps": 6807723,
+                "file_path": "results\\test\\CarDrive\\CarDrive-6807723.onnx",
+                "reward": null,
+                "creation_time": 1619798168.462709,
+                "auxillary_file_paths": [
+                    "results\\test\\CarDrive\\CarDrive-6807723.pt"
+                ]
+            },
+            {
+                "steps": 6814379,
+                "file_path": "results\\test\\CarDrive\\CarDrive-6814379.onnx",
+                "reward": null,
+                "creation_time": 1619798236.428763,
+                "auxillary_file_paths": [
+                    "results\\test\\CarDrive\\CarDrive-6814379.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 6814379,
+            "file_path": "results\\test\\CarDrive.onnx",
+            "reward": null,
+            "creation_time": 1619798236.428763,
+            "auxillary_file_paths": [
+                "results\\test\\CarDrive\\CarDrive-6814379.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.26.0",
+        "torch_version": "1.7.1"
+    }
+}

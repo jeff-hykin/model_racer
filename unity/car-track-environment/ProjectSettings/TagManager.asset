@@ -6,6 +6,9 @@ TagManager:
   tags:
   - wall
   - tile
+  - obstacle
+  - obstaclex
+  - obstacley
   layers:
   - Default
   - TransparentFX

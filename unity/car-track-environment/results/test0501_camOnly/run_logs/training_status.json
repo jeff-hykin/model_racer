@@ -1,0 +1,41 @@
+{
+    "block_offset": {
+        "lesson_num": 1
+    },
+    "CarDrive": {
+        "checkpoints": [
+            {
+                "steps": 499984,
+                "file_path": "results\\test0501_camOnly\\CarDrive\\CarDrive-499984.onnx",
+                "reward": null,
+                "creation_time": 1619935979.7733257,
+                "auxillary_file_paths": [
+                    "results\\test0501_camOnly\\CarDrive\\CarDrive-499984.pt"
+                ]
+            },
+            {
+                "steps": 630640,
+                "file_path": "results\\test0501_camOnly\\CarDrive\\CarDrive-630640.onnx",
+                "reward": 40.64910338819027,
+                "creation_time": 1619937001.7519593,
+                "auxillary_file_paths": [
+                    "results\\test0501_camOnly\\CarDrive\\CarDrive-630640.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 630640,
+            "file_path": "results\\test0501_camOnly\\CarDrive.onnx",
+            "reward": 40.64910338819027,
+            "creation_time": 1619937001.7519593,
+            "auxillary_file_paths": [
+                "results\\test0501_camOnly\\CarDrive\\CarDrive-630640.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.26.0",
+        "torch_version": "1.7.1"
+    }
+}

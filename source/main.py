@@ -36,8 +36,9 @@ try:
         while not done:
             # take a random action
             actions = env.action_space.sample()  # rotation, acceleration
-            actions = np.array([0,1])
+            actions = np.array([0,0.1])
             obs, reward, done, _ = env.step(actions)
+            # print(obs)
             # note: returns a generator, not a list
             episode_rewards += reward
         print(f"Total reward this episode: {episode_rewards}")

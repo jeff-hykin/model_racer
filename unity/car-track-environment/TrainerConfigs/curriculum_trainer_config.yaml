@@ -1,0 +1,34 @@
+behaviors:
+    CarDrive:
+        trainer_type: ppo    
+        summary_freq: 10000
+        max_steps: 20000000
+environment_parameters:
+  block_offset:
+    curriculum:
+      - name: Lesson1  # Follow lane, no obstacle
+        completion_criteria:
+          measure: reward
+          behavior: CarDrive
+          signal_smoothing: true
+          min_lesson_length: 5
+          threshold: 30
+        value: 0.0
+      - name: Lesson2  # All obstacles on the left side of the road, not blocking in the middle
+        completion_criteria:
+          measure: reward
+          behavior: CarDrive
+          signal_smoothing: true
+          min_lesson_length: 5
+          threshold: 40
+        value: 4.0
+      - name: Lesson3  # All obstacles more towards the middle
+        completion_criteria:
+          measure: reward
+          behavior: CarDrive
+          signal_smoothing: true
+          min_lesson_length: 10
+          threshold: 50
+        value: 7.0
+      - name: Lesson4  # Random Obstacle Locations [0, block_offset], different for every obstacle
+        value: 10.0
