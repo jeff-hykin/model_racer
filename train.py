@@ -83,14 +83,17 @@ class Arguments:
 
 
 def misc_setup(arg):
+    # 
+    # init misc
+    # 
     set_global_seeds(args.seed)
-
-    tensorboard_log = (
-        None if args.tensorboard_log == "" else args.tensorboard_log + "/" + ENV_ID
-    )
-
+    tensorboard_log = (None if args.tensorboard_log == "" else args.tensorboard_log + "/" + ENV_ID)
     print("=" * 10, ENV_ID, args.algo, "=" * 10)
-
+    
+    
+    # 
+    # setup VAE
+    # 
     vae = None
     if args.vae_path != "":
         print("Loading VAE ...")
@@ -103,28 +106,28 @@ def misc_setup(arg):
     else:
         print("Learning from pixels...")
 
-    # Load hyperparameters from yaml file
+    # 
+    # setup hyperparameters
+    # 
+    # load from yaml
     with open("hyperparams/{}.yml".format(args.algo), "r") as f:
         hyperparams = yaml.load(f)[BASE_ENV]
-
-
-    # Sort hyperparams that will be saved
-    saved_hyperparams = OrderedDict(
-        [(key, hyperparams[key]) for key in sorted(hyperparams.keys())]
-    )
-    # save vae path
+    # Sort
+    saved_hyperparams = OrderedDict([(key, hyperparams[key]) for key in sorted(hyperparams.keys())])
     saved_hyperparams["vae_path"] = args.vae_path
-    if vae is not None:
-        saved_hyperparams["z_size"] = vae.z_size
-
-    # Compute and create log path
+    if vae is not None: saved_hyperparams["z_size"] = vae.z_size
+    
+    # 
+    # setup paths
+    # 
     log_path = os.path.join(args.log_folder, args.algo)
-    save_path = os.path.join(
-        log_path, "{}_{}".format(ENV_ID, get_latest_run_id(log_path, ENV_ID) + 1)
-    )
+    save_path = os.path.join(log_path, "{}_{}".format(ENV_ID, get_latest_run_id(log_path, ENV_ID) + 1))
     params_path = os.path.join(save_path, ENV_ID)
     os.makedirs(params_path, exist_ok=True)
-
+    
+    # 
+    # learning rate
+    # 
     # Create learning rate schedules for ppo2 and sac
     if args.algo in ["ppo2", "sac"]:
         for key in ["learning_rate", "cliprange"]:
@@ -138,14 +141,19 @@ def misc_setup(arg):
                 hyperparams[key] = constfn(hyperparams[key])
             else:
                 raise ValueError("Invalid valid for {}: {}".format(key, hyperparams[key]))
-
+    # 
+    # timesteps
+    # 
     # Should we overwrite the number of timesteps?
     if args.n_timesteps > 0:
         n_timesteps = args.n_timesteps
     else:
         n_timesteps = int(hyperparams["n_timesteps"])
     del hyperparams["n_timesteps"]
-
+    
+    # 
+    # normalization
+    # 
     normalize = False
     normalize_kwargs = {}
     if "normalize" in hyperparams.keys():
