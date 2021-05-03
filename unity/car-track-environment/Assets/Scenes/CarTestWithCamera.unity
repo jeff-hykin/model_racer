@@ -2710,9 +2710,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Camera: {fileID: 17768360}
   m_SensorName: CameraSensor
-  m_Width: 20
-  m_Height: 20
-  m_Grayscale: 1
+  m_Width: 112
+  m_Height: 112
+  m_Grayscale: 0
   m_Compression: 1
 --- !u!1001 &1785294536
 PrefabInstance:
