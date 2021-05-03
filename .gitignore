@@ -1,6 +1,10 @@
+#
 # Unity
+#
 Library/*
 Temp/*
+**/UnityTempFile*
+
 # Output Artifacts (Legacy)
 /models
 /summaries
