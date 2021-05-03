@@ -37,7 +37,6 @@ unity_gym_env = UnityToGymWrapper(
 )
 
 # TODO: what happens when Unity resets the enviornment? is that the done?
-
 class UnityRacerEnv(object):
     def __init__(
         self,
@@ -112,7 +111,7 @@ class UnityRacerEnv(object):
         # Repeat action if using frame_skip
         for _ in range(self.frame_skip):
             raw_input, reward, done, debugging_info = unity_gym_env.step(np.array([ self.steering, self.throttle ]))
-            camera_input, lidar_input = raw_input
+            camera_input, = raw_input
             observation = self.vae.encode_from_raw_image(camera_input)
 
         return observation, reward, done, debugging_info
@@ -121,7 +120,7 @@ class UnityRacerEnv(object):
         # 
         # reset the unity env
         # 
-        camera_input, lidar_input = unity_gym_env.reset()
+        camera_input, = unity_gym_env.reset()
         print("ENV: resetting. Camera_input is", camera_input.shape)
         observation = self.vae.encode_from_raw_image(camera_input)
         

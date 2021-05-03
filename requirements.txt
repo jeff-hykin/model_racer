@@ -1,3 +1,4 @@
+# NOTE: this is incomplete, needs to be updated
 PyYAML
 mpi4py
 numpy
