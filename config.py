@@ -1,3 +1,6 @@
+# env choice
+WHICH_ENV = "unityracer" # "dummy", "jetracer", "unityracer"
+
 # Raw camera input
 CAMERA_HEIGHT = 112
 CAMERA_WIDTH = 112
