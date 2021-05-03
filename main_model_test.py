@@ -14,7 +14,7 @@ from utils import utils
 # entrypoint
 # 
 if __name__ == '__main__':
-    from main import Arguments, parse_arguments, run_agent, setup_default_environment 
+    from main_model_test import Arguments, parse_arguments, run_agent, setup_default_environment 
     # ^ its weird but it lets __name__ be at the top
     
     arguments = Arguments(**parse_arguments())
@@ -133,7 +133,7 @@ def run_agent(arguments: Arguments, env):
     observation = env.reset()
     running_reward = 0.0
     episode_length = 0
-    for each_timestep in timesteps:
+    for each_timestep in arguments.timesteps:
         
         # 
         # ask the model what it is going to do
