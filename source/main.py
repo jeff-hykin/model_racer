@@ -25,6 +25,7 @@ try:
     # Reset the environment
     initial_observations = env.reset()
     print('initial_observations is:')
+    print(initial_observations)
     print('action space range:')
     print('High: ',env.action_space.high)
     print('Low: ',env.action_space.low)
@@ -38,6 +39,8 @@ try:
             actions = env.action_space.sample()  # rotation, acceleration
             actions = np.array([0,0.1])
             obs, reward, done, _ = env.step(actions)
+            print(obs[0].shape)
+            # note: returns a generator, not a list
             episode_rewards += reward
         print(f"Total reward this episode: {episode_rewards}")
 finally:

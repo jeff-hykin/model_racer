@@ -7,7 +7,7 @@ public class RoadEnvironmentController : MonoBehaviour
 {
     private List<GameObject> obstacles = new List<GameObject>();
     private List<Vector3> originalObstaclePositions = new List<Vector3>();
-    public float defaultBlockOffset = 5f;
+    public float defaultBlockOffset = 10f;
     void Awake()
     {
         GetObstacleOriginalPosition();

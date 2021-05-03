@@ -14,6 +14,7 @@ public class CarAgent : Agent
     private Transform _track;
     private int actionCount = 0;
     private int maxActionCountPerEpisode = 10000;
+    public Vector3 lastPos;
     public override void Initialize()
     {
         GetTrackIncrement();
@@ -33,23 +34,28 @@ public class CarAgent : Agent
         float horizontal = vectorAction[0];
         float vertical = vectorAction[1];
 
-        var lastPos = transform.position;
+        
         MoveCar(horizontal, vertical, Time.fixedDeltaTime);
 
         int reward = GetTrackIncrement();
-        
-        var moveVec = transform.position - lastPos;
-        float angle = Vector3.Angle(moveVec, _track.forward);
-        //float bonus = (1f - angle / 90f) * Mathf.Clamp01(vertical) * Time.fixedDeltaTime;
+
+        var movevec = transform.position - lastPos;
+        float angle = Vector3.Angle(movevec, _track.forward);
+        //float bonus = (1f - angle / 90f) * Mathf.clamp01(vertical) * time.fixeddeltatime;
         float bonus = 0;
         if (vertical < 0)
         {
-            bonus = -1.2f* ((1f - angle / 90f) * Mathf.Clamp01(vertical)) * Time.fixedDeltaTime;  // slightly discorage moving backwards
+            bonus = ((1f - angle / 120f) * Mathf.Clamp01(vertical)) * Time.fixedDeltaTime;  // slightly discorage moving backwards
         }
         else
         {
-            bonus = ((1f - angle / 90f) * Mathf.Clamp01(vertical)) * Time.fixedDeltaTime;
+            bonus = ((1f - angle / 120f) * Mathf.Clamp01(vertical)) * Time.fixedDeltaTime;
         }
+        //float bonus = vertical * Time.fixedDeltaTime;
+        //if (vertical < 0)
+        //{
+        //    bonus = -1 * Time.fixedDeltaTime;
+        //}
         AddReward(bonus);
 
         score += reward;
@@ -59,6 +65,7 @@ public class CarAgent : Agent
             actionCount = 0;
             EndEpisode();
         }
+        lastPos = transform.position;
     }
 
     public override void Heuristic(float[] action)
@@ -67,9 +74,9 @@ public class CarAgent : Agent
         action[1] = Input.GetAxis("Vertical");
     }
 
-    //public override void CollectObservations(VectorSensor vectorSensor)
-    //{
-    //    float angle = Vector3.SignedAngle(_track.forward, transform.forward, Vector3.up);
+    public override void CollectObservations(VectorSensor vectorSensor)
+    {
+        float angle = Vector3.SignedAngle(_track.forward, transform.forward, Vector3.up);
 
     //    vectorSensor.AddObservation(angle / 180f);
     //    vectorSensor.AddObservation(ObserveRay(1.5f, .5f, 25f));
@@ -82,7 +89,7 @@ public class CarAgent : Agent
     //    vectorSensor.AddObservation(ObserveRay(1.5f, -.375f, -20f));
     //    vectorSensor.AddObservation(ObserveRay(1.5f, -.5f, -25f));
     //    vectorSensor.AddObservation(ObserveRay(-1.5f, 0, 180f));
-    //}
+    }
 
     private float ObserveRay(float z, float x, float angle)
     {
@@ -133,13 +140,15 @@ public class CarAgent : Agent
             transform.localRotation = Quaternion.identity;
         }
         environmentObject.GetComponent<RoadEnvironmentController>().ResetArea();
+        lastPos = transform.position;
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("wall")|| other.gameObject.CompareTag("obstaclex")|| other.gameObject.CompareTag("obstacley"))
+        if (other.gameObject.CompareTag("wall")|| other.gameObject.CompareTag("obstaclex")|| other.gameObject.CompareTag("obstacley") || other.gameObject.CompareTag("obstacle"))
         {
             SetReward(-1f);
+            Debug.Log("Hit"+other.gameObject.name);
             EndEpisode();
         }
     }

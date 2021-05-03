@@ -1,0 +1,32 @@
+{
+    "block_offset": {
+        "lesson_num": 0
+    },
+    "CarDrive": {
+        "checkpoints": [
+            {
+                "steps": 94795,
+                "file_path": "results\\test0501_camOnlySimple\\CarDrive\\CarDrive-94795.onnx",
+                "reward": 2.9948593070730567,
+                "creation_time": 1620017328.3944137,
+                "auxillary_file_paths": [
+                    "results\\test0501_camOnlySimple\\CarDrive\\CarDrive-94795.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 94795,
+            "file_path": "results\\test0501_camOnlySimple\\CarDrive.onnx",
+            "reward": 2.9948593070730567,
+            "creation_time": 1620017328.3944137,
+            "auxillary_file_paths": [
+                "results\\test0501_camOnlySimple\\CarDrive\\CarDrive-94795.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.26.0",
+        "torch_version": "1.7.1"
+    }
+}

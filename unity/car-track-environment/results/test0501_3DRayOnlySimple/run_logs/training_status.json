@@ -1,0 +1,68 @@
+{
+    "block_offset": {
+        "lesson_num": 3
+    },
+    "CarDrive": {
+        "checkpoints": [
+            {
+                "steps": 3499984,
+                "file_path": "results\\test0501_3DRayOnlySimple\\CarDrive\\CarDrive-3499984.onnx",
+                "reward": null,
+                "creation_time": 1620040583.4921994,
+                "auxillary_file_paths": [
+                    "results\\test0501_3DRayOnlySimple\\CarDrive\\CarDrive-3499984.pt"
+                ]
+            },
+            {
+                "steps": 3999963,
+                "file_path": "results\\test0501_3DRayOnlySimple\\CarDrive\\CarDrive-3999963.onnx",
+                "reward": null,
+                "creation_time": 1620043526.1625159,
+                "auxillary_file_paths": [
+                    "results\\test0501_3DRayOnlySimple\\CarDrive\\CarDrive-3999963.pt"
+                ]
+            },
+            {
+                "steps": 4499984,
+                "file_path": "results\\test0501_3DRayOnlySimple\\CarDrive\\CarDrive-4499984.onnx",
+                "reward": null,
+                "creation_time": 1620046469.161746,
+                "auxillary_file_paths": [
+                    "results\\test0501_3DRayOnlySimple\\CarDrive\\CarDrive-4499984.pt"
+                ]
+            },
+            {
+                "steps": 4999984,
+                "file_path": "results\\test0501_3DRayOnlySimple\\CarDrive\\CarDrive-4999984.onnx",
+                "reward": null,
+                "creation_time": 1620049416.5618117,
+                "auxillary_file_paths": [
+                    "results\\test0501_3DRayOnlySimple\\CarDrive\\CarDrive-4999984.pt"
+                ]
+            },
+            {
+                "steps": 5254039,
+                "file_path": "results\\test0501_3DRayOnlySimple\\CarDrive\\CarDrive-5254039.onnx",
+                "reward": 65.16774582862854,
+                "creation_time": 1620050935.492862,
+                "auxillary_file_paths": [
+                    "results\\test0501_3DRayOnlySimple\\CarDrive\\CarDrive-5254039.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 5254039,
+            "file_path": "results\\test0501_3DRayOnlySimple\\CarDrive.onnx",
+            "reward": 65.16774582862854,
+            "creation_time": 1620050935.492862,
+            "auxillary_file_paths": [
+                "results\\test0501_3DRayOnlySimple\\CarDrive\\CarDrive-5254039.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.26.0",
+        "torch_version": "1.7.1"
+    }
+}

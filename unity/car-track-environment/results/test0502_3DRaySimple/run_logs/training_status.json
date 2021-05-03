@@ -1,0 +1,29 @@
+{
+    "CarDrive": {
+        "checkpoints": [
+            {
+                "steps": 423712,
+                "file_path": "results\\test0502_3DRaySimple\\CarDrive\\CarDrive-423712.onnx",
+                "reward": null,
+                "creation_time": 1620068866.914058,
+                "auxillary_file_paths": [
+                    "results\\test0502_3DRaySimple\\CarDrive\\CarDrive-423712.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 423712,
+            "file_path": "results\\test0502_3DRaySimple\\CarDrive.onnx",
+            "reward": null,
+            "creation_time": 1620068866.914058,
+            "auxillary_file_paths": [
+                "results\\test0502_3DRaySimple\\CarDrive\\CarDrive-423712.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.26.0",
+        "torch_version": "1.7.1"
+    }
+}
