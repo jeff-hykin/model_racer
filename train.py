@@ -47,7 +47,7 @@ if __name__ == '__main__':
     env, vae, n_stack, hyperparameters, joystick = setup_env(vae, hyperparameters, which_env=WHICH_ENV, joystick=None) # optional: joystick = JoyStick()
     hyperparameters = ddpg_initilzation(args, hyperparameters)
     model = fine_tuning_setup(args, env, hyperparameters, tensorboard_log, normalize)
-    model = training(args, model, n_timesteps, joystick=None)
+    model = training(args, model, save_path, n_timesteps, joystick=None)
     save_info(args, model, vae, env, saved_hyperparameters, normalize, save_path, params_path)
 
 # 
@@ -66,7 +66,7 @@ class Arguments:
     save_vae              : bool = False
     seed                  : int  = 0
     expert_guidance_steps : int  = 50000
-    base_policy_path      : str  = "logs/sac/DonkeyVae-v0-level-0_2/DonkeyVae-v0-level-0_best.pkl"
+    base_policy_path      : str  = ""
     trained_agent         : str  = ""    
 
     def get_args_from_cli(self) -> Arguments:
@@ -80,7 +80,7 @@ class Arguments:
         parser.add_argument("--save-vae"             ,                  action="store_true", default=False,                                                            help="Save VAE"                                       ,)
         parser.add_argument("--seed"                 ,                  type=int,            default=0,                                                                help="Random generator seed"                          ,)
         parser.add_argument("--expert-guidance-steps", "-expert-steps", type=int,            default=50000,                                                            help="Number of steps of expert guidance"             ,)
-        parser.add_argument("--base-policy-path"     , "-base"        , type=str,            default="logs/sac/DonkeyVae-v0-level-0_2/DonkeyVae-v0-level-0_best.pkl",  help="Path to saved model for the base policy"        ,)
+        parser.add_argument("--base-policy-path"     , "-base"        , type=str,            default="",                                                               help="Path to saved model for the base policy"        ,)
         parser.add_argument("--trained-agent"        , "-i"           , type=str,            default="",                                                               help="Path to a pretrained agent to continue training",)
         return parser.parse_args()
 
@@ -276,7 +276,7 @@ def fine_tuning_setup(args, env, hyperparameters, tensorboard_log, normalize):
 # 
 # configure argumentss
 #
-def training(args, model, n_timesteps, joystick=None):
+def training(args, model, save_path, n_timesteps, joystick=None):
     import os
     import keras
     from config import ENV_ID
