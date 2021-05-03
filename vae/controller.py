@@ -57,6 +57,7 @@ class VAEController:
         :param raw_image: (np.ndarray) BGR image
         """
         r = ROI
+        print('raw_image.shape = ', raw_image.shape)
         # Crop image
         im = raw_image[int(r[1]):int(r[1] + r[3]), int(r[0]):int(r[0] + r[2])]
         return self.encode(im)
