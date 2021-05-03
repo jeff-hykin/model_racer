@@ -24,9 +24,9 @@ But nix is really reliable once it is installed<br>
         * `sudo apt-get update 2>/dev/null`
         * If you're on MacOS Big Sur
             *  see [this](https://duan.ca/2020/12/13/nix-on-macos-11-big-sur/) tutorial
-        * If you're on MacOS Catalina, run:
+        * Else If you're on MacOS Catalina, run:
             * `sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume `
-        * If you're not, run:
+        * Else, run:
             * `curl -L https://nixos.org/nix/install | bash`
         * `source $HOME/.nix-profile/etc/profile.d/nix.sh`
         * (may need to restart console/terminal)
@@ -36,11 +36,10 @@ But nix is really reliable once it is installed<br>
     * `cd wherever-you-want-to-save-this-project`<br>
     * `git clone https://github.com/jeff-hykin/model_racer`
     * `cd model_racer`
-* Go to the JIRL folder
-    * `cd ./source/jirl`
 * Actually run some code
     * run `./shell` to get into the project environment
         * Note: your first load will likely take a really long time because its auto-installing exact versions of everything
+    * Go to the JIRL folder `cd ./source/jirl`
     * run `commands` to see all of the project commands
 * Probably resume reading the previous guide 
 
@@ -50,4 +49,3 @@ But nix is really reliable once it is installed<br>
 - Install python3
 - Install the python modules with `python3 -m pip install -r requirements.txt`
 - Run the script `./settings/commands/commands` to see avalible commands
-
