@@ -82,7 +82,7 @@ class Arguments:
         return parser.get_args_from_cli()
 
 
-def misc_setup(arg):
+def misc_setup(args):
     # 
     # init misc
     # 
