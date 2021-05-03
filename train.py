@@ -23,7 +23,6 @@ from utils.utils import (
     ALGOS,
     linear_schedule,
     get_latest_run_id,
-    load_vae,
     create_callback,
     JoyStick,
 )
@@ -144,9 +143,10 @@ def misc_setup(args):
         print("VAE: Loaded")
     else:
         print(f"VAE: Randomly initializing with size {Z_SIZE}")
-        vae = load_vae(z_size=Z_SIZE)
+        vae = VAEController(z_size=Z_SIZE)
         # Save network if randomly initilizing
         args.save_vae = True
+    print(f"VAE: number of latent variables (z_size): {vae.z_size}")
 
     # 
     # setup hyperparameters
