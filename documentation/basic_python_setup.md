@@ -19,8 +19,8 @@ But nix is really reliable once it is installed<br>
 
 ### For Mac/Linux
 
-* Install [nix](https://nixos.org/guides/install-nix.html), more detailed guide [here](https://nixos.org/manual/nix/stable/#chap-installation)
-    * Just run the following in your console/terminal app
+* Install [nix](https://nixos.org/guides/install-nix.html) (if something goes wrong, there's a more detailed guide [here](https://nixos.org/manual/nix/stable/#chap-installation))
+    * To install nix, just run the following in your console/terminal
         * `sudo apt-get update 2>/dev/null`
         * If you're on MacOS Big Sur
             *  see [this](https://duan.ca/2020/12/13/nix-on-macos-11-big-sur/) tutorial
@@ -43,9 +43,10 @@ But nix is really reliable once it is installed<br>
 * Probably resume reading the previous guide
 
 
-# Manual project setup
+# Manual (Alternaitve) project setup
 
 - Install python3
+- Install opencv-python
 - Install the python modules with `python3 -m pip install -r requirements.txt`
 - Run the script `./settings/commands/commands` to see avalible commands
 
