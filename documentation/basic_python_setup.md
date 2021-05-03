@@ -34,7 +34,7 @@ But nix is really reliable once it is installed<br>
     * (if you don't have git just run `nix-env -i git`)
 * Clone/Open the project if you don't have it
     * `cd wherever-you-want-to-save-this-project`<br>
-    * `git clone https://github.com/jeff-hykin/model_racer`
+    * `git clone --recursive https://github.com/jeff-hykin/model_racer`
     * `cd model_racer`
 * Actually run some code
     * run `./shell` to get into the project environment
