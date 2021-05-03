@@ -16,7 +16,7 @@ from stable_baselines.common import set_global_seeds
 from stable_baselines.ppo2.ppo2 import constfn
 
 # internal
-from config import  Z_SIZE, BASE_ENV, ENV_ID, WHICH_ENV,
+from config import Z_SIZE, BASE_ENV, ENV_ID, WHICH_ENV
 from utils.utils import (
     make_env,
     ALGOS,
@@ -82,7 +82,7 @@ class Arguments:
         parser.add_argument("--expert-guidance-steps", "-expert-steps", type=int,            default=50000,                                                            help="Number of steps of expert guidance"             ,)
         parser.add_argument("--base-policy-path"     , "-base"        , type=str,            default="logs/sac/DonkeyVae-v0-level-0_2/DonkeyVae-v0-level-0_best.pkl",  help="Path to saved model for the base policy"        ,)
         parser.add_argument("--trained-agent"        , "-i"           , type=str,            default="",                                                               help="Path to a pretrained agent to continue training",)
-        return parser.get_args_from_cli()
+        return parser.parse_args()
 
 # 
 # environment
@@ -148,7 +148,9 @@ def misc_setup(args):
     # setup hyperparameters
     # 
     import yaml
-    with open("hyperparameters/{}.yml".format(args.algo), "r") as f:
+    import os
+    hyperparameters_path = f"hyperparams/{args.algo}.yml"
+    with open(hyperparameters_path, "r") as f:
         hyperparameters = yaml.load(f)[BASE_ENV]
     # Sort
     saved_hyperparameters = OrderedDict([(key, hyperparameters[key]) for key in sorted(hyperparameters.keys())])

@@ -15,34 +15,28 @@ import numpy as np
 import time
 
 from config import (
-    INPUT_DIM,
     MIN_STEERING,
     MAX_STEERING,
     JERK_REWARD_WEIGHT,
     MAX_STEERING_DIFF,
-)
-from config import (
-    ROI,
-    THROTTLE_REWARD_WEIGHT,
-    MAX_THROTTLE,
-    MIN_THROTTLE,
-    REWARD_CRASH,
-    CRASH_SPEED_WEIGHT,
 )
 from config import CAMERA_HEIGHT, CAMERA_WIDTH, MAX_THROTTLE, MIN_THROTTLE
 from config import STEERING_GAIN, STEERING_BIAS
 
 from gym_unity.envs import UnityToGymWrapper
 from mlagents_envs.environment import UnityEnvironment
-from modules.input_preprocessing_utils import *
-from modules.generic_python_tools import *
+import include
+# from .. .. modules.input_preprocessing_utils import *
+include.file("../../modules/input_preprocessing_utils.py", globals())
+# from .. .. modules.generic_python_tools import *
+include.file("../../modules/generic_python_tools.py", globals())
 
 unity_env = UnityToGymWrapper(
     UnityEnvironment(),
     allow_multiple_obs=True, # not exactly sure what this does,
 )
 
-class UnityEnv(object):
+class UnityRacerEnv(object):
     def __init__(
         self,
         vae=None,
@@ -55,6 +49,7 @@ class UnityEnv(object):
         action_lambda=0.5,
     ):
         # copy args
+        self.vae           = vae
         self.min_throttle  = min_throttle
         self.max_throttle  = max_throttle
         self.frame_skip    = frame_skip
@@ -63,6 +58,7 @@ class UnityEnv(object):
         # init
         self.throttle = 0
         self.steering = 0
+        self.z_size = None if vae is None else vae.z_size
         
         # emulate gym env
         self.observation_space = spaces.Box(
@@ -83,12 +79,6 @@ class UnityEnv(object):
         self.command_history = np.zeros((1, self.n_commands * n_command_history))
         self.n_stack = n_stack
         self.stacked_obs = None
-
-        # assumes that we are using VAE input
-        self.vae = vae
-        self.z_size = None
-        if vae is not None:
-            self.z_size = vae.z_size
 
     def step(self, action):
         steering, throttle = action
