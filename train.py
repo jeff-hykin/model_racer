@@ -8,6 +8,7 @@ import argparse
 import os
 from collections import OrderedDict
 from pprint import pprint
+import tensorflow as tf
 
 # external
 import numpy as np
@@ -26,6 +27,7 @@ from utils.utils import (
     create_callback,
     JoyStick,
 )
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 # 
 # entrypoint
@@ -53,6 +55,7 @@ if __name__ == '__main__':
 # Arguments
 # 
 import dataclasses
+Arguments = None
 @dataclasses.dataclass
 class Arguments:
     algo                  : str  = "sac"
@@ -63,12 +66,11 @@ class Arguments:
     vae_path              : str  = ""
     save_vae              : bool = False
     seed                  : int  = 0
-    random_features       : bool = False
     expert_guidance_steps : int  = 50000
     base_policy_path      : str  = "logs/sac/DonkeyVae-v0-level-0_2/DonkeyVae-v0-level-0_best.pkl"
     trained_agent         : str  = ""    
 
-    def get_args_from_cli(self):
+    def get_args_from_cli(self) -> Arguments:
         parser = argparse.ArgumentParser()
         parser.add_argument("--algo"                 ,                  type=str,            default="sac",      required=False,       choices=list(ALGOS.keys()),     help="RL Algorithm",)
         parser.add_argument("--n-timesteps"          , "-n"           , type=int,            default=-1,                                                               help="Overwrite the number of timesteps"              ,)
@@ -78,7 +80,6 @@ class Arguments:
         parser.add_argument("--vae-path"             , "-vae"         , type=str,            default="",                                                               help="Path to saved VAE"                              ,)
         parser.add_argument("--save-vae"             ,                  action="store_true", default=False,                                                            help="Save VAE"                                       ,)
         parser.add_argument("--seed"                 ,                  type=int,            default=0,                                                                help="Random generator seed"                          ,)
-        parser.add_argument("--random-features"      ,                  action="store_true", default=False,                                                            help="Use random features"                            ,)
         parser.add_argument("--expert-guidance-steps", "-expert-steps", type=int,            default=50000,                                                            help="Number of steps of expert guidance"             ,)
         parser.add_argument("--base-policy-path"     , "-base"        , type=str,            default="logs/sac/DonkeyVae-v0-level-0_2/DonkeyVae-v0-level-0_best.pkl",  help="Path to saved model for the base policy"        ,)
         parser.add_argument("--trained-agent"        , "-i"           , type=str,            default="",                                                               help="Path to a pretrained agent to continue training",)
@@ -132,17 +133,20 @@ def misc_setup(args):
     # 
     # setup VAE
     # 
-    vae = None
-    if args.vae_path != "":
-        print("Loading VAE ...")
-        vae = load_vae(args.vae_path)
-    elif args.random_features:
-        print("Randomly initialized VAE")
-        vae = load_vae(z_size=Z_SIZE)
-        # Save network
-        args.save_vae = True
+    from vae.controller import VAEController
+    from os.path import isfile
+    vae_path = args.vae_path
+    if type(vae_path) == str and vae_path != "":
+        print("VAE: Loading pretrained")
+        assert not isfile(vae_path), f"VAE: trying to load, but no file found at {vae_path}"
+        vae = VAEController(z_size=None)
+        vae.load(vae_path)
+        print("VAE: Loaded")
     else:
-        print("Learning from pixels...")
+        print(f"VAE: Randomly initializing with size {Z_SIZE}")
+        vae = load_vae(z_size=Z_SIZE)
+        # Save network if randomly initilizing
+        args.save_vae = True
 
     # 
     # setup hyperparameters
@@ -151,7 +155,7 @@ def misc_setup(args):
     import os
     hyperparameters_path = f"hyperparams/{args.algo}.yml"
     with open(hyperparameters_path, "r") as f:
-        hyperparameters = yaml.load(f)[BASE_ENV]
+        hyperparameters = yaml.load(f, Loader=yaml.FullLoader)[BASE_ENV]
     # Sort
     saved_hyperparameters = OrderedDict([(key, hyperparameters[key]) for key in sorted(hyperparameters.keys())])
     saved_hyperparameters["vae_path"] = args.vae_path
