@@ -31,10 +31,12 @@ include.file("../../modules/input_preprocessing_utils.py", globals())
 # from .. .. modules.generic_python_tools import *
 include.file("../../modules/generic_python_tools.py", globals())
 
-unity_env = UnityToGymWrapper(
+unity_gym_env = UnityToGymWrapper(
     UnityEnvironment(),
     allow_multiple_obs=True, # not exactly sure what this does,
 )
+
+# TODO: what happens when Unity resets the enviornment? is that the done?
 
 class UnityRacerEnv(object):
     def __init__(
@@ -109,8 +111,9 @@ class UnityRacerEnv(object):
         self.steering = float(steering) * STEERING_GAIN + STEERING_BIAS
         # Repeat action if using frame_skip
         for _ in range(self.frame_skip):
-            raw_input, reward, done, debugging_info = unity_env.step(np.array([ self.steering, self.throttle ]))
-            observation = self.vae.encode_from_raw_image(raw_input)
+            raw_input, reward, done, debugging_info = unity_gym_env.step(np.array([ self.steering, self.throttle ]))
+            camera_input, lidar_input = raw_input
+            observation = self.vae.encode_from_raw_image(camera_input)
 
         return observation, reward, done, debugging_info
 
@@ -118,8 +121,9 @@ class UnityRacerEnv(object):
         # 
         # reset the unity env
         # 
-        raw_input = unity_env.reset()
-        observation = self.vae.encode_from_raw_image(raw_input)
+        camera_input, lidar_input = unity_gym_env.reset()
+        print("ENV: resetting. Camera_input is", camera_input.shape)
+        observation = self.vae.encode_from_raw_image(camera_input)
         
         # 
         # reset vars
