@@ -1,6 +1,7 @@
 # Code adapted from https://github.com/araffin/rl-baselines-zoo
 # Author: Antonin Raffin
 # Edited by Sheelabhadra Dey
+# Edited again by Jeff Hykin
 import argparse
 import os
 import time
@@ -21,16 +22,9 @@ from stable_baselines.ddpg import (
 from stable_baselines.ppo2.ppo2 import constfn
 
 from config import (
-    MIN_THROTTLE,
-    MAX_THROTTLE,
-    FRAME_SKIP,
-    MAX_CTE_ERROR,
-    SIM_PARAMS,
-    N_COMMAND_HISTORY,
     Z_SIZE,
     BASE_ENV,
     ENV_ID,
-    MAX_STEERING_DIFF,
 )
 from utils.utils import (
     make_env,
@@ -43,147 +37,130 @@ from utils.utils import (
 )
 
 from envs.vae_env import JetVAEEnv
-from envs.jet_racer import JetRacer
 
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "--algo",
-    help="RL Algorithm",
-    default="sac",
-    type=str,
-    required=False,
-    choices=list(ALGOS.keys()),
-)
-parser.add_argument(
-    "-n",
-    "--n-timesteps",
-    help="Overwrite the number of timesteps",
-    default=-1,
-    type=int,
-)
-parser.add_argument(
-    "--log-interval",
-    help="Override log interval (default: -1, no change)",
-    default=-1,
-    type=int,
-)
-parser.add_argument(
-    "-tb", "--tensorboard-log", help="Tensorboard log dir", default="", type=str
-)
-parser.add_argument("-f", "--log-folder", help="Log folder", type=str, default="logs")
-parser.add_argument(
-    "-vae", "--vae-path", help="Path to saved VAE", type=str, default=""
-)
-parser.add_argument("--save-vae", action="store_true", default=False, help="Save VAE")
-parser.add_argument("--seed", help="Random generator seed", type=int, default=0)
-parser.add_argument(
-    "--random-features", action="store_true", default=False, help="Use random features"
-)
-parser.add_argument(
-    "-expert-steps",
-    "--expert-guidance-steps",
-    default=50000,
-    type=int,
-    help="Number of steps of expert guidance",
-)
-parser.add_argument(
-    "-base",
-    "--base-policy-path",
-    help="Path to saved model for the base policy",
-    default="logs/sac/DonkeyVae-v0-level-0_2/DonkeyVae-v0-level-0_best.pkl",
-    type=str,
-)
-parser.add_argument(
-    "-i",
-    "--trained-agent",
-    help="Path to a pretrained agent to continue training",
-    default="",
-    type=str,
-)
-args = parser.parse_args()
-
-set_global_seeds(args.seed)
-
-tensorboard_log = (
-    None if args.tensorboard_log == "" else args.tensorboard_log + "/" + ENV_ID
-)
-
-print("=" * 10, ENV_ID, args.algo, "=" * 10)
-
-vae = None
-if args.vae_path != "":
-    print("Loading VAE ...")
-    vae = load_vae(args.vae_path)
-elif args.random_features:
-    print("Randomly initialized VAE")
-    vae = load_vae(z_size=Z_SIZE)
-    # Save network
-    args.save_vae = True
-else:
-    print("Learning from pixels...")
-
-# Load hyperparameters from yaml file
-with open("hyperparams/{}.yml".format(args.algo), "r") as f:
-    hyperparams = yaml.load(f)[BASE_ENV]
+# 
+# entrypoint
+# 
+if __name__ == '__main__':
+    from train import Arguments, misc_setup,
+    
+    args = Arguments().get_args_from_cli()
+    
+    vae, hyperparams, tensorboard_log, normalize, save_path, n_timesteps, params_path, saved_hyperparams = misc_setup(args)
 
 
-# Sort hyperparams that will be saved
-saved_hyperparams = OrderedDict(
-    [(key, hyperparams[key]) for key in sorted(hyperparams.keys())]
-)
-# save vae path
-saved_hyperparams["vae_path"] = args.vae_path
-if vae is not None:
-    saved_hyperparams["z_size"] = vae.z_size
+import dataclasses
+@dataclasses.dataclass
+class Arguments:
+    algo                  : str  = "sac"
+    n_timesteps           : int  = -1
+    log_interval          : int  = -1
+    tensorboard_log       : str  = ""
+    log_folder            : str  = "logs"
+    vae_path              : str  = ""
+    save_vae              : bool = False
+    seed                  : int  = 0
+    random_features       : bool = False
+    expert_guidance_steps : int  = 50000
+    base_policy_path      : str  = "logs/sac/DonkeyVae-v0-level-0_2/DonkeyVae-v0-level-0_best.pkl"
+    trained_agent         : str  = ""    
 
-# Compute and create log path
-log_path = os.path.join(args.log_folder, args.algo)
-save_path = os.path.join(
-    log_path, "{}_{}".format(ENV_ID, get_latest_run_id(log_path, ENV_ID) + 1)
-)
-params_path = os.path.join(save_path, ENV_ID)
-os.makedirs(params_path, exist_ok=True)
+    def get_args_from_cli(self):
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--algo"                 ,                  type=str,            default="sac",      required=False,       choices=list(ALGOS.keys()),     help="RL Algorithm",)
+        parser.add_argument("--n-timesteps"          , "-n"           , type=int,            default=-1,                                                               help="Overwrite the number of timesteps"              ,)
+        parser.add_argument("--log-interval"         ,                  type=int,            default=-1,                                                               help="Override log interval (default: -1, no change)" ,)
+        parser.add_argument("--tensorboard-log"      , "-tb"          , type=str,            default="",                                                               help="Tensorboard log dir"                            ,)
+        parser.add_argument("--log-folder"           , "-f"           , type=str,            default="logs",                                                           help="Log folder"                                     ,)
+        parser.add_argument("--vae-path"             , "-vae"         , type=str,            default="",                                                               help="Path to saved VAE"                              ,)
+        parser.add_argument("--save-vae"             ,                  action="store_true", default=False,                                                            help="Save VAE"                                       ,)
+        parser.add_argument("--seed"                 ,                  type=int,            default=0,                                                                help="Random generator seed"                          ,)
+        parser.add_argument("--random-features"      ,                  action="store_true", default=False,                                                            help="Use random features"                            ,)
+        parser.add_argument("--expert-guidance-steps", "-expert-steps", type=int,            default=50000,                                                            help="Number of steps of expert guidance"             ,)
+        parser.add_argument("--base-policy-path"     , "-base"        , type=str,            default="logs/sac/DonkeyVae-v0-level-0_2/DonkeyVae-v0-level-0_best.pkl",  help="Path to saved model for the base policy"        ,)
+        parser.add_argument("--trained-agent"        , "-i"           , type=str,            default="",                                                               help="Path to a pretrained agent to continue training",)
+        return parser.get_args_from_cli()
 
-# Create learning rate schedules for ppo2 and sac
-if args.algo in ["ppo2", "sac"]:
-    for key in ["learning_rate", "cliprange"]:
-        if key not in hyperparams:
-            continue
-        if isinstance(hyperparams[key], str):
-            schedule, initial_value = hyperparams[key].split("_")
-            initial_value = float(initial_value)
-            hyperparams[key] = linear_schedule(initial_value)
-        elif isinstance(hyperparams[key], float):
-            hyperparams[key] = constfn(hyperparams[key])
-        else:
-            raise ValueError("Invalid valid for {}: {}".format(key, hyperparams[key]))
 
-# Should we overwrite the number of timesteps?
-if args.n_timesteps > 0:
-    n_timesteps = args.n_timesteps
-else:
-    n_timesteps = int(hyperparams["n_timesteps"])
-del hyperparams["n_timesteps"]
+def misc_setup(arg):
+    set_global_seeds(args.seed)
 
-normalize = False
-normalize_kwargs = {}
-if "normalize" in hyperparams.keys():
-    normalize = hyperparams["normalize"]
-    if isinstance(normalize, str):
-        normalize_kwargs = eval(normalize)
-        normalize = True
-    del hyperparams["normalize"]
+    tensorboard_log = (
+        None if args.tensorboard_log == "" else args.tensorboard_log + "/" + ENV_ID
+    )
 
-# Create the jet racer object
-car = JetRacer()
+    print("=" * 10, ENV_ID, args.algo, "=" * 10)
 
-# Create the joystick object
+    vae = None
+    if args.vae_path != "":
+        print("Loading VAE ...")
+        vae = load_vae(args.vae_path)
+    elif args.random_features:
+        print("Randomly initialized VAE")
+        vae = load_vae(z_size=Z_SIZE)
+        # Save network
+        args.save_vae = True
+    else:
+        print("Learning from pixels...")
+
+    # Load hyperparameters from yaml file
+    with open("hyperparams/{}.yml".format(args.algo), "r") as f:
+        hyperparams = yaml.load(f)[BASE_ENV]
+
+
+    # Sort hyperparams that will be saved
+    saved_hyperparams = OrderedDict(
+        [(key, hyperparams[key]) for key in sorted(hyperparams.keys())]
+    )
+    # save vae path
+    saved_hyperparams["vae_path"] = args.vae_path
+    if vae is not None:
+        saved_hyperparams["z_size"] = vae.z_size
+
+    # Compute and create log path
+    log_path = os.path.join(args.log_folder, args.algo)
+    save_path = os.path.join(
+        log_path, "{}_{}".format(ENV_ID, get_latest_run_id(log_path, ENV_ID) + 1)
+    )
+    params_path = os.path.join(save_path, ENV_ID)
+    os.makedirs(params_path, exist_ok=True)
+
+    # Create learning rate schedules for ppo2 and sac
+    if args.algo in ["ppo2", "sac"]:
+        for key in ["learning_rate", "cliprange"]:
+            if key not in hyperparams:
+                continue
+            if isinstance(hyperparams[key], str):
+                schedule, initial_value = hyperparams[key].split("_")
+                initial_value = float(initial_value)
+                hyperparams[key] = linear_schedule(initial_value)
+            elif isinstance(hyperparams[key], float):
+                hyperparams[key] = constfn(hyperparams[key])
+            else:
+                raise ValueError("Invalid valid for {}: {}".format(key, hyperparams[key]))
+
+    # Should we overwrite the number of timesteps?
+    if args.n_timesteps > 0:
+        n_timesteps = args.n_timesteps
+    else:
+        n_timesteps = int(hyperparams["n_timesteps"])
+    del hyperparams["n_timesteps"]
+
+    normalize = False
+    normalize_kwargs = {}
+    if "normalize" in hyperparams.keys():
+        normalize = hyperparams["normalize"]
+        if isinstance(normalize, str):
+            normalize_kwargs = eval(normalize)
+            normalize = True
+        del hyperparams["normalize"]
+    return vae, hyperparams, tensorboard_log, normalize, save_path, n_timesteps, params_path, saved_hyperpara
 
 # Create the environment
 # env = DummyVecEnv([make_env(args.seed, vae=vae)])
-env = JetVAEEnv(vae=vae, jet_racer=car)
+env = JetVAEEnv(vae=vae)
 
-# JoyStick object
+# Create the joystick object
 js = None  # JoyStick()
 
 # Optional Frame-stacking
@@ -243,42 +220,43 @@ else:
         env=env, tensorboard_log=tensorboard_log, verbose=1, **hyperparams
     )
 
-kwargs = {}
-if args.log_interval > -1:
-    kwargs.update({"log_interval": args.log_interval})
-
-if args.algo == "sac":
-    kwargs.update(
-        {
-            "callback": create_callback(
-                args.algo, os.path.join(save_path, ENV_ID + "_best"), verbose=1
-            )
-        }
-    )
-kwargs.update({"save_path": save_path})
-
-# Base policy
 agent = None
-if args.base_policy_path != "":
+should_use_base_policy = args.base_policy_path != ""
+if should_use_base_policy:
     print("Loading Base Policy for JIRL ...")
     agent = keras.models.load_model(args.base_policy_path)
-    kwargs.update({"base_policy": agent})
-    kwargs.update({"expert_guidance_steps": args.expert_guidance_steps})
-    kwargs.update({"joystick": js})
 
+# 
+# configure argumentss
+# 
+kwargs = {
+    "save_path": save_path
+}
+if args.log_interval > -1 : kwargs.update({"log_interval": args.log_interval})
+if args.algo == "sac"     : kwargs.update({ "callback": create_callback(args.algo, os.path.join(save_path, ENV_ID + "_best"), verbose=1)} )
+if should_use_base_policy : kwargs.update({"base_policy": agent})
+if should_use_base_policy : kwargs.update({"expert_guidance_steps": args.expert_guidance_steps})
+if should_use_base_policy : kwargs.update({"joystick": js})
+
+# 
+# training
+# 
+if not should_use_base_policy:
+    # Train agent from scratch
+    model.learn(n_timesteps, **kwargs) 
+else:
     # Train agent using JIRL
     model.learn_jirl(n_timesteps, **kwargs)
 
-else:
-    # Train agent from scratch
-    model.learn(n_timesteps, **kwargs)
-
-# Save trained model
+# 
+# Save info
+# 
+# model 
 model.save(os.path.join(save_path, ENV_ID))
-# Save hyperparams
+# hyperparams
 with open(os.path.join(params_path, "config.yml"), "w") as f:
     yaml.dump(saved_hyperparams, f)
-
+# vae
 if args.save_vae and vae is not None:
     print("Saving VAE")
     vae.save(os.path.join(params_path, "vae"))
