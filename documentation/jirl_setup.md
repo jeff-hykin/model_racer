@@ -1,10 +1,12 @@
-# How to setup the managed environment
+# Setup
 
+### TLDR
+1. Install Nix
+2. Nix then autoinstalls everything
 <br>
 
 **NOTE** : You can also use the manual setup listed at the bottom. <br>
-The managed environment is very reliable way to setup.<br>
-(and if you already have nix, it's pretty much 100% automated)
+But nix is really reliable once it is installed<br>
 
 ### For Windows
 
@@ -30,14 +32,17 @@ The managed environment is very reliable way to setup.<br>
         * (may need to restart console/terminal)
 * Install `git`
     * (if you don't have git just run `nix-env -i git`)
-* Clone/Open the project
+* Clone/Open the project if you don't have it
     * `cd wherever-you-want-to-save-this-project`<br>
-    * `git clone https://github.com/jeff-hykin/cpp-textmate-grammar`
-    * `cd cpp-textmate-grammar`
+    * `git clone https://github.com/jeff-hykin/model_racer`
+    * `cd model_racer`
+* Go to the JIRL folder
+    * `cd ./source/jirl`
 * Actually run some code
     * run `./shell` to get into the project environment
-        * Note: this will almost certainly take a while the first time because it will auto-install exact versions of everything: `node`, `python`, `ruby`, all modules for them, etc
+        * Note: your first load will likely take a really long time because its auto-installing exact versions of everything
     * run `commands` to see all of the project commands
+* Probably resume reading the previous guide 
 
 
 # Manual project setup
@@ -45,3 +50,4 @@ The managed environment is very reliable way to setup.<br>
 - Install python3
 - Install the python modules with `python3 -m pip install -r requirements.txt`
 - Run the script `./settings/commands/commands` to see avalible commands
+

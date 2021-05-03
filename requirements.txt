@@ -1,3 +1,17 @@
+stable-baselines==2.7.0
+numpy==1.20.2
+tensorflow==1.15.5 # because of stable-baselines
+keras==1.2.2 # because of tensorflow
+pillow==7.2.0 # because of gym
+PyYAML==5.4.1 # this is probably flexible
+mpi4py==3.0.3 # this is probably flexible
+pytablewriter==0.58.0 # this is probably flexible
+opencv-python==4.5.1.48 # this is probably flexible
+cloudpickle==1.6.0 # this is probably flexible
+pygame==2.0.1 # this is probably flexible
+joblib==1.0.1 # this is probably flexible
+tqdm==4.59.0 # this is probably flexible
+h5py==3.2.1
 absl-py==0.12.0
 appdirs==1.4.4
 attrs==20.3.0
@@ -14,14 +28,11 @@ google-auth==1.29.0
 google-auth-oauthlib==0.4.4
 grpcio==1.37.0
 gym==0.18.0
-h5py==3.2.1
 idna==2.10
 importlib-metadata==1.6.0
 Markdown==3.3.4
 more-itertools==8.3.0
-numpy==1.20.2
 oauthlib==3.1.0
-Pillow==7.2.0
 pip==20.1.1
 protobuf==3.15.8
 pyasn1==0.4.8
