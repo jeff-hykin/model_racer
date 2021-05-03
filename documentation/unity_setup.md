@@ -25,5 +25,5 @@
     - Select `Assets` (Lime green arrow)
     - Select `Scenes` (Green arrow)
     - Select `CarTrainPython.unity` (Blue arrow)
-
-### Now the basic Unity env should be setup (resume other instructions)
+4. Now you should be able to see the car/track! 
+5. (resume other instructions)
