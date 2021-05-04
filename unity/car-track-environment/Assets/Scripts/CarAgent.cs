@@ -45,7 +45,7 @@ public class CarAgent : Agent
         float bonus = 0;
         if (vertical < 0)
         {
-            bonus = ((1f - angle / 120f) * Mathf.Clamp01(vertical)) * Time.fixedDeltaTime;  // slightly discorage moving backwards
+            bonus =  -1* ((1f - angle / 120f) * Mathf.Clamp01(vertical)) * Time.fixedDeltaTime;  // slightly discorage moving backwards
         }
         else
         {

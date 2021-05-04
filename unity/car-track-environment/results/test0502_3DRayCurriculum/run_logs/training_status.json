@@ -1,0 +1,41 @@
+{
+    "block_offset": {
+        "lesson_num": 1
+    },
+    "CarDrive": {
+        "checkpoints": [
+            {
+                "steps": 428448,
+                "file_path": "results\\test0502_3DRayCurriculum\\CarDrive\\CarDrive-428448.onnx",
+                "reward": null,
+                "creation_time": 1620072777.8916328,
+                "auxillary_file_paths": [
+                    "results\\test0502_3DRayCurriculum\\CarDrive\\CarDrive-428448.pt"
+                ]
+            },
+            {
+                "steps": 434464,
+                "file_path": "results\\test0502_3DRayCurriculum\\CarDrive\\CarDrive-434464.onnx",
+                "reward": null,
+                "creation_time": 1620100439.657276,
+                "auxillary_file_paths": [
+                    "results\\test0502_3DRayCurriculum\\CarDrive\\CarDrive-434464.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 434464,
+            "file_path": "results\\test0502_3DRayCurriculum\\CarDrive.onnx",
+            "reward": null,
+            "creation_time": 1620100439.657276,
+            "auxillary_file_paths": [
+                "results\\test0502_3DRayCurriculum\\CarDrive\\CarDrive-434464.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.26.0",
+        "torch_version": "1.7.1"
+    }
+}
