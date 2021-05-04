@@ -13,3 +13,8 @@
 
 8. If you want to run the JIRL code instead of the demo code<br> `cd ./source/jirl`<br> `python train.py`<br> (and dont forget to click start in Unity)
 
+### Unity Curriculun Learning
+Check `master-wip` branch for unity driving simulation and curriculum learning models and statistics.<p>
+To see the trained models, refer to `model_racer/unity/car-track-environment/results`. `test0502_3DRaySimple` is trained without curriculum learning, and `test0502_3DRayCurriculum` is trained with curriculum learning. <p>
+To check the training environment, go to `model_racer/unity/car-track-environment/Assets/Scenes/`. Use `CarTrainSimpleRay_Cylinder.unity` for car agent with ray sensor. Car with camera sensor is also available under prefab.<p>
+Training configurations are located under `model_racer/unity/car-track-environment/TrainerConfigs/`<p>
