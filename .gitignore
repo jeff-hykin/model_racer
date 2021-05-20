@@ -1,8 +1,8 @@
 #
 # Unity
 #
-unity/**/Library/*
-unity/**/Temp/*
+**/Library/*
+**/Temp/*
 **/UnityTempFile*
 # Output Artifacts (Legacy)
 /models
