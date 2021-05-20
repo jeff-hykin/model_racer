@@ -205,6 +205,21 @@ PrefabInstance:
       propertyPath: m_BrainParameters.VectorObservationSize
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2635235728461468825, guid: 888d1ac231c33ef4b976462aafa377ef,
+        type: 3}
+      propertyPath: m_Width
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 2635235728461468825, guid: 888d1ac231c33ef4b976462aafa377ef,
+        type: 3}
+      propertyPath: m_Height
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2635235728461468825, guid: 888d1ac231c33ef4b976462aafa377ef,
+        type: 3}
+      propertyPath: m_Grayscale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6491861765785197740, guid: 888d1ac231c33ef4b976462aafa377ef,
         type: 3}
       propertyPath: m_Name
